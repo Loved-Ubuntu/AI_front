@@ -6,6 +6,10 @@
     {% load static %}
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"/>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <script>
+
+const csrftoken = getCookie('csrftoken');
+    </script>
     <title>Bottle tester</title>
 </head>
     <body>
@@ -32,6 +36,7 @@
                                 <canvas id="canvas" width="640" height="480"></canvas>
                                 </div>
                             <script>
+
                                 let click_button = document.querySelector("#click-photo");
                                 let canvas = document.querySelector("#canvas");
                                 var video = document.querySelector("#videoElement");
@@ -49,6 +54,17 @@
                                 click_button.addEventListener('click', function() {
                                     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
                                     var dataURL = canvas.toDataURL("image/png");
+                                    fetch('', {
+                                        headers: {
+                                          'Accept': 'application/json',
+                                          'Content-Type': 'application/json'
+                                        },
+                                        body:JSON.stringify({'image' : dataURL}),
+                                        method:"POST"
+                                    })
+                                        .then(response => {response.json()})
+                                        .then(data => console.log(data));
+
                                 });
                                 }
                           </script>
