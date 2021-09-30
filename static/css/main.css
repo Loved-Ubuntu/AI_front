@@ -1,0 +1,24 @@
+#container {
+    alignment: center;
+    text-align: center;
+    }
+
+#videoElement {
+    background-color: #666;
+    }
+body {
+      background-color: #DADADA;
+    }
+#header{
+	margin-top: 0px;
+	height: 160px;
+}
+#footer{
+	position: relative;
+    top: 20px;
+	margin-bottom: 20px;
+    right: 0;
+	left: 0;
+    width: 100%;
+	text-align: center;
+}
