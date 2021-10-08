@@ -12,5 +12,6 @@ def index(request):
         data_from_post = json.load(request)['image']
         response_shape = send_image_shape(data_from_post)
         response_color = send_image_color(data_from_post)
-        print(response)
+        print("Shape is:", response_shape) #Remove this tag, and use the function to show a visual index
+        print("Color is:", response_color) #Remove this tag, and use the function to show a visual index
     return HttpResponse(template.render(context, request))

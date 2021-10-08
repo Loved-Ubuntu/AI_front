@@ -1,11 +1,10 @@
 def send_image_shape(image_encoded):
 	import requests
 	import json
-	import socket
 	# Hier uitzoeken wat het IP van de Back-end service zal zijn in het Docker netwerk
 	# Normaal kan je dat statisch krijgen in het Netwerk
 	# De gekozen port moet ook in de Back-end en Front-end (client side) consistent zijn
-	url = f'http://{socket.gethostbyname(socket.gethostname())}:30303/'
+	url = f'http://localhost:30303/'
 
 	jsonRequest = {
 		'type': 'shapeModel',
@@ -43,12 +42,11 @@ def send_image_shape(image_encoded):
 def send_image_color(image_encoded):
     import requests
     import json
-    import socket
 
     # Hier uitzoeken wat het IP van de Back-end service zal zijn in het Docker netwerk
     # Normaal kan je dat statisch krijgen in het Netwerk
     # De gekozen port moet ook in de Back-end en Front-end (client side) consistent zijn
-    url = f'http://{socket.gethostbyname(socket.gethostname())}:30303/'
+    url = f'http://localhost:30303/'
 
     jsonRequest = {
         'type': 'color',
