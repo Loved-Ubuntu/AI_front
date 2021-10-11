@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <meta charset="UTF-8">
     <title>Settings</title>
+    <script>
+        const csrftoken = getCookie('csrftoken');
+    </script>
 </head>
 <body>
     <div class="ui container" style="width: 80%">
@@ -21,10 +24,61 @@
                 <a href="/settings" class="item active"></i> Settings </a>
                 <a href="/information" class="item active"></i> Information </a>
             </div>
-             <div class="ui grid stackable doubled">
-                <div class="sixteen wide column">
+            <div class="ui grid stackable doubled">
+                <div class="eight wide column">
                     <div class="ui center text segment">
-                        Settings
+                        <h2>Shape settings</h2>
+                        {% block content %}
+                        <form class="ui form" method="POST" id="shape_form">
+                            {% csrf_token %}
+                            <div class="field">
+                                <label>Scale</label>
+                                <input type="text" name="scale" value="{{shape.scale}}">
+                            </div>
+                            <div class="field">
+                                <label>Blur</label>
+                                <input type="text" name="blur" value="{{shape.blur}}">
+                            </div>
+                            <label><strong>Edges: Lower | Upper</strong></label>
+                            <div class="two fields">
+                                <div class="field">
+                                    <input type="text" name="edges_lower" value="{{shape.edges.lower}}">
+                                </div>
+                                <div class="field">
+                                    <input type="text" name="edges_upper" value="{{shape.edges.upper}}">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Grayscale</label>
+                                <input type="text" name="grayscale" value="{{shape.grayscale}}">
+                            </div>
+                            <div class="field">
+                                <label>Threshold: T | Fill</label>
+                                <div class="two fields">
+                                     <div class="field">
+                                        <input type="text" name="threshold_t" value="{{shape.threshold.t}}">
+                                     </div>
+                                     <div class="field">
+                                         <input type="text" name="threshold_fill" value="{{shape.threshold.fill}}">
+                                     </div>
+                                </div>
+                            </div>
+                            <button class="ui blue button" name="action" value="shape" type="submit">Change</button>
+                            <button class="ui red button" name="action" value="shape_reset" type="">Reset</button>
+                        </form>
+                        {% endblock content %}
+                    </div>
+                </div>
+                <div class="eight wide column">
+                    <div class="ui center text segment">
+                        <h2>Color settings</h2>
+                        <form class="ui form">
+                            <div class="field">
+                                <label>Cutoff</label>
+                                <input type="text" name="first-name" value="0.1">
+                            </div>
+                            <button class="ui button" type="submit">Change</button>
+                        </form>
                     </div>
                 </div>
              </div>
