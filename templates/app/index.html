@@ -10,7 +10,7 @@
 
 const csrftoken = getCookie('csrftoken');
     </script>
-    <title>Bottle tester</title>
+    <title>Artificial Intelligence Anomaly Detection</title>
 </head>
     <body>
         <div class="ui container" style="width: 80%">
@@ -21,9 +21,10 @@ const csrftoken = getCookie('csrftoken');
                         <span class="left">Artificial Intelligence Anomaly Detection</span>
                     </h1>
                 </div>
-                <div class="ui two blue item menu">
-                    <a href="" class="item active"><i class="home icon"></i> Bottle control </a>
-                    <a href="" class="item active"></i> Information </a>
+                <div class="ui three blue item menu">
+                    <a href="/" class="item active"><i class="home icon"></i> Bottle control </a>
+                    <a href="/settings" class="item active"></i> Settings </a>
+                    <a href="/information" class="item active"></i> Information </a>
                 </div>
                 <div class="ui grid stackable doubled">
                     <div class="sixteen wide column">
@@ -53,7 +54,7 @@ const csrftoken = getCookie('csrftoken');
                                 });
                                 click_button.addEventListener('click', function() {
                                     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-                                    var dataURL = canvas.toDataURL("image/png");
+                                    var dataURL = canvas.toDataURL("");
                                     fetch('', {
                                         headers: {
                                           'Accept': 'application/json',
