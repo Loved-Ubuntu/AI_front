@@ -66,19 +66,20 @@
                             <button class="ui blue button" name="action" value="shape" type="submit">Change</button>
                             <button class="ui red button" name="action" value="shape_reset" type="">Reset</button>
                         </form>
-                        {% endblock content %}
                     </div>
                 </div>
                 <div class="eight wide column">
                     <div class="ui center text segment">
                         <h2>Color settings</h2>
-                        <form class="ui form">
+                        <form class="ui form" method="POST" id="color_form">
                             <div class="field">
-                                <label>Cutoff</label>
-                                <input type="text" name="first-name" value="0.1">
+                                <label>Scale</label>
+                                <input type="text" name="color_scale" value="{{color.scale}}">
                             </div>
-                            <button class="ui button" type="submit">Change</button>
+                            <button class="ui blue button" name="action" value="color" type="submit">Change</button>
+                            <button class="ui red button" name="action" value="color_reset" type="">Reset</button>
                         </form>
+                        {% endblock content %}
                     </div>
                 </div>
              </div>

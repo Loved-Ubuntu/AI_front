@@ -47,7 +47,7 @@ def send_shapemodel_request(image_encoded, identifier, shape):
     return response.text
 
 
-def send_colormodel_request(image_encoded, identifier):
+def send_colormodel_request(image_encoded, identifier, color):
     # Hier uitzoeken wat het IP van de Back-end service zal zijn in het Docker netwerk
     # Normaal kan je dat statisch krijgen in het Netwerk
     # De gekozen port moet ook in de Back-end en Front-end (client side) consistent zijn
@@ -90,7 +90,7 @@ def send_colormodel_request(image_encoded, identifier):
         'imageOperations': [
             {
                 'operation': 'scale',
-                'arg': {'scale': 0.1}
+                'arg': {'scale': {{color['scale']}}}
             },
         ],
     }

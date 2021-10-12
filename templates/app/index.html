@@ -27,12 +27,28 @@ const csrftoken = getCookie('csrftoken');
                     <a href="/information" class="item active"></i> Information </a>
                 </div>
                 <div class="ui grid stackable doubled">
-                    <div class="sixteen wide column">
+                    <div class="ten wide column">
                         <div class="ui center text segment">
+                            <table class="ui celled table">
+                                  <thead>
+                                    <tr>
+                                      <th>Shape</th>
+                                      <th>Color</th>
+                                      <th>Label</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="positive">Accepted</td>
+                                      <td class="negative">Denied</td>
+                                      <td class="positive">Accepted</td>
+                                    </tr>
+                                  </tbody>
+                            </table>
                             <div id="container">
                                 <video autoplay="true" id="videoElement"></video>
                                 <br/><br/>
-                                <button class="positive fluid ui button" id="click-photo">Take a moment shot</button>
+                                <button class="positive fluid ui button" id="click-photo">Make an image</button>
                                 <br/>
                                 <canvas id="canvas" width="640" height="480"></canvas>
                                 </div>
@@ -68,14 +84,38 @@ const csrftoken = getCookie('csrftoken');
 
                                 });
                                 }
-                          </script>
+                            </script>
+                            <button class="ui blue button" name="" value="" type="">Send this image</button>
+                        </div>
+                    </div>
+                    <div class="six wide column">
+                        <div class="ui center text segment">
+                            <!-- For loop for this part --!>
+                            <div class="ui items">
+                                <div class="item">
+                                    <div class="ui small image">
+                                        <img src="/static/images/no_image_on_hand.jpg">
+                                    </div>
+                                <div class="middle aligned content">
+                                    <div class="header">
+                                        Model name
+                                    </div>
+                                    <div class="description">
+                                        <p>Information about the model</p>
+                                    </div>
+                                    <div class="extra">
+                                        <button class="ui green button" name="" value="" type="">Use model</button>
+                                        <button class="ui red button" name="" value="" type="">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-		</div>
-		<div id="footer">
+            <div id="footer">
             &copy; 2021 - Zuyd ICT Academie - &nbsp;All rights reserved
-		</div>
-	</body>
+            </div>
+        </div>
+    </body>
 </html>

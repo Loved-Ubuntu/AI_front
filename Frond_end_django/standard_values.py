@@ -1,4 +1,4 @@
-def get_standard_values():
+def get_standard_values_shape():
     shape = {
         "scale": 0.1,
         "blur": "",
@@ -7,3 +7,9 @@ def get_standard_values():
         "threshold": {'t': 128, 'fill': 255}
     }
     return(shape)
+
+def get_standard_values_color():
+    color = {
+        "scale": 0.1
+    }
+    return (color)

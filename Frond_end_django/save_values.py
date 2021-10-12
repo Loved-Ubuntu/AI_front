@@ -6,4 +6,8 @@ def save_settings_shape(request, values):
     values['shape']['edges']['upper'] = request.POST.get('edges_upper')
     values['shape']['threshold']['t'] = request.POST.get('threshold_t')
     values['shape']['threshold']['fill'] = request.POST.get('threshold_fill')
-    return
+    return(values)
+
+def save_settings_color(request, values):
+    values['color']['scale'] = request.POST.get('color_scale')
+    return(values)
