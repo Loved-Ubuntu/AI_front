@@ -88,29 +88,32 @@ const csrftoken = getCookie('csrftoken');
                             <button class="ui blue button" name="" value="" type="">Send this image</button>
                         </div>
                     </div>
+                    {% block content %}
                     <div class="six wide column">
                         <div class="ui center text segment">
-                            <!-- For loop for this part --!>
-                            <div class="ui items">
-                                <div class="item">
-                                    <div class="ui small image">
-                                        <img src="/static/images/no_image_on_hand.jpg">
-                                    </div>
-                                <div class="middle aligned content">
-                                    <div class="header">
-                                        Model name
-                                    </div>
-                                    <div class="description">
-                                        <p>Information about the model</p>
-                                    </div>
-                                    <div class="extra">
-                                        <button class="ui green button" name="" value="" type="">Use model</button>
-                                        <button class="ui red button" name="" value="" type="">Delete</button>
+                            {% for x in message %}
+                                <div class="ui items">
+                                    <div class="item">
+                                        <div class="ui small image">
+                                            <img src="/static/images/no_image_on_hand.jpg">
+                                        </div>
+                                    <div class="middle aligned content">
+                                        <div class="header">
+                                            {{x.identifier}}
+                                        </div>
+                                        <div class="description">
+                                            <p>Information about the model</p>
+                                        </div>
+                                        <div class="extra">
+                                            <button class="ui green button" name="" value="" type="">Use model</button>
+                                            <button class="ui red button" name="" value="" type="">Delete</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
+                    {% endblock content %}
                 </div>
             </div>
             <div id="footer">

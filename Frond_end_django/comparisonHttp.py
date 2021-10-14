@@ -90,7 +90,7 @@ def send_colormodel_request(image_encoded, identifier, color):
         'imageOperations': [
             {
                 'operation': 'scale',
-                'arg': {'scale': {{color['scale']}}}
+                'arg': {'scale': color['scale']}
             },
         ],
     }

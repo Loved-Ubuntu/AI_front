@@ -1,26 +1,39 @@
 from django.http import HttpResponse
 from django.template import Context, loader
 from django.views.decorators.csrf import csrf_exempt
-import json
-from Frond_end_django.comparisonHttp import send_shapemodel_request, send_colormodel_request
+from Frond_end_django.comparisonHttp import *
 from Frond_end_django.standard_values import get_standard_values_shape, get_standard_values_color
 from Frond_end_django.save_values import save_settings_shape, save_settings_color
 from django.contrib.sessions.models import Session
 
 @csrf_exempt
 def index(request):
-    template = loader.get_template('app/index.html')
-    context = {}
-    if request.method == 'POST':
+    models = json.loads(get_models())
+    # print(models['message'][0]['imageOperations']) #settings (loop the 0)
+    # print(models['message'][0]['hist']) #image
+    #print(models['message'][0]['identifier'])  # model_name
+
+    #print(models)
+
+    if request.method == 'POST': #Sending image + settings
         data_from_post = json.load(request)['image']
         data_from_post = data_from_post[22:]
-        identifier = 'shape' #Wat is de identifier!?!
+        model = "ex3_modelx" #Dit moet opgevraagd worden
         shape = request.session['values']['shape']
+        color = request.session['values']['color']
+        identifier = model + "_shape"
         response_shape = send_shapemodel_request(data_from_post, identifier, shape)
-        response_color = send_colormodel_request(data_from_post)
+        identifier = model + "_color"
+        response_color = send_colormodel_request(data_from_post, identifier, color)
         print("Shape is:", response_shape) #Remove this tag, and use the function to show a visual index
         print("Color is:", response_color) #Remove this tag, and use the function to show a visual index
-    return HttpResponse(template.render(context, request))
+
+    template = loader.get_template('app/index.html')
+    context = {'models': models}
+    for key in models['message']:
+        print(key['identifier'])
+        print(key)
+    return HttpResponse(template.render(context['models'], request))
 
 @csrf_exempt
 def settings(request):
@@ -48,7 +61,7 @@ def settings(request):
         elif request.POST.get('action') == 'color':
             request.session['values'] = save_settings_color(request, values)
 
-    print(request.session['values'])
+    #print(request.session['values']) # To see if session is correct
 
     template = loader.get_template('app/settings.html')
     context = {'form': values}
