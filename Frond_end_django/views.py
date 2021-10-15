@@ -14,26 +14,38 @@ def index(request):
     #print(models['message'][0]['identifier'])  # model_name
 
     #print(models)
-
+    try:
+        response
+    except NameError:
+        response = {'shape': 'None', 'color': 'None', 'label': 'None'}
     if request.method == 'POST': #Sending image + settings
         data_from_post = json.load(request)['image']
         data_from_post = data_from_post[22:]
         model = "ex3_modelx" #Dit moet opgevraagd worden
         shape = request.session['values']['shape']
         color = request.session['values']['color']
-        identifier = model + "_shape"
-        response_shape = send_shapemodel_request(data_from_post, identifier, shape)
         identifier = model + "_color"
         response_color = send_colormodel_request(data_from_post, identifier, color)
-        print("Shape is:", response_shape) #Remove this tag, and use the function to show a visual index
-        print("Color is:", response_color) #Remove this tag, and use the function to show a visual index
+        identifier = model + "_shape"
+        response_shape = json.loads(send_shapemodel_request(data_from_post, identifier, shape))
+
+        if response_shape['type'] == "error":
+            print(response_shape['message'])
+            response['shape'] = "Error"
+        elif response_shape['type'] == "true":
+            response['shape'] = "Accepted"
+        elif response_shape['type'] == "false":
+            response['shape'] = "Denied"
+
+        #if response_color['type'] == 'error':
+            #print(response_color['message'])
 
     template = loader.get_template('app/index.html')
-    context = {'models': models}
-    for key in models['message']:
-        print(key['identifier'])
-        print(key)
-    return HttpResponse(template.render(context['models'], request))
+    context = {'models': models, 'response': response}
+    #for key in models['message']:
+        #print(key['identifier'])
+        #print(key)
+    return HttpResponse(template.render(context, request))
 
 @csrf_exempt
 def settings(request):

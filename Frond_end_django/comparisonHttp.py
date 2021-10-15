@@ -1,12 +1,13 @@
 import requests
 import json
 
+url = f'http://localhost:30303/'
+
 
 def send_shapemodel_request(image_encoded, identifier, shape):
     # Hier uitzoeken wat het IP van de Back-end service zal zijn in het Docker netwerk
     # Normaal kan je dat statisch krijgen in het Netwerk
     # De gekozen port moet ook in de Back-end en Front-end (client side) consistent zijn
-    url = f'http://localhost:30303/'
 
     # image_encoded = image_encoded.split(',')[1]
     # print(type(image_encoded))
@@ -51,7 +52,6 @@ def send_colormodel_request(image_encoded, identifier, color):
     # Hier uitzoeken wat het IP van de Back-end service zal zijn in het Docker netwerk
     # Normaal kan je dat statisch krijgen in het Netwerk
     # De gekozen port moet ook in de Back-end en Front-end (client side) consistent zijn
-    url = f'http://localhost:30303/'
 
     # image_encoded = image_encoded.split(',')[1]
     # print(type(image_encoded))
@@ -106,7 +106,6 @@ def send_color_request(image_encoded, modelIdentifier):
     # Hier uitzoeken wat het IP van de Back-end service zal zijn in het Docker netwerk
     # Normaal kan je dat statisch krijgen in het Netwerk
     # De gekozen port moet ook in de Back-end en Front-end (client side) consistent zijn
-    url = f'http://localhost:30303/'
 
     # image_encoded = image_encoded.split(',')[1]
     # print(type(image_encoded))
@@ -129,7 +128,6 @@ def send_shape_request(image_encoded, modelIdentifier):
     # Hier uitzoeken wat het IP van de Back-end service zal zijn in het Docker netwerk
     # Normaal kan je dat statisch krijgen in het Netwerk
     # De gekozen port moet ook in de Back-end en Front-end (client side) consistent zijn
-    url = f'http://localhost:30303/'
 
     # image_encoded = image_encoded.split(',')[1]
     # print(type(image_encoded))
@@ -149,18 +147,15 @@ def send_shape_request(image_encoded, modelIdentifier):
 
 
 def get_model(identifier):
-    url = f'http://localhost:30303/'
     response = requests.get(f'{url}/models/{identifier}')  # GET Request naar server voor een model
     return response.text
 
 
 def get_models():
-    url = f'http://localhost:30303/'
     response = requests.get(f'{url}/models/')  # GET Request naar server voor alle models
     return response.text
 
 
 def del_model(identifier):
-    url = f'http://localhost:30303/'
     response = requests.delete(f'{url}/models/ex3_model_shape')  # DELETE Request naar server voor een model
     return response.text

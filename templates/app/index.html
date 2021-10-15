@@ -13,6 +13,7 @@ const csrftoken = getCookie('csrftoken');
     <title>Artificial Intelligence Anomaly Detection</title>
 </head>
     <body>
+        {% block content %}
         <div class="ui container" style="width: 80%">
             <div class="ui container" style="width: 80%">
                 <div class="ui red header clear">
@@ -39,7 +40,7 @@ const csrftoken = getCookie('csrftoken');
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td class="positive">Accepted</td>
+                                      <td class="positive">{{response.shape}}</td>
                                       <td class="negative">Denied</td>
                                       <td class="positive">Accepted</td>
                                     </tr>
@@ -88,10 +89,9 @@ const csrftoken = getCookie('csrftoken');
                             <button class="ui blue button" name="" value="" type="">Send this image</button>
                         </div>
                     </div>
-                    {% block content %}
                     <div class="six wide column">
                         <div class="ui center text segment">
-                            {% for x in message %}
+                            {% for x in models.message %}
                                 <div class="ui items">
                                     <div class="item">
                                         <div class="ui small image">
