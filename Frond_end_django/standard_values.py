@@ -20,6 +20,7 @@ def check_for_session(request):
         color = get_standard_values_color()
         request.session['values'] = {"shape": shape, "color": color}
         values = request.session['values']
+        request.session['identifier'] = ''
     else:
         #Session.objects.all().delete() #If session crash, run this
         values = request.session['values']

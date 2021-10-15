@@ -17,7 +17,7 @@ def index(request):
     try:
         response
     except NameError:
-        response = {'shape': 'None', 'color': 'None', 'label': 'Yet to implement'}
+        response = {'shape': {'class': 'warning', 'type': 'None'}, 'color': {'class': 'warning', 'type': 'None'}, 'label': {'class': 'warning', 'type': 'Yet to implement'}}
     if request.method == 'POST':
         if request.POST.get('action') == 'send_image':
             data_from_post = request.POST.get('image')
@@ -28,26 +28,32 @@ def index(request):
             model = "ex3_modelx"  # Dit moet opgevraagd worden  #For make model
             shape = request.session['values']['shape'] #For make model
             color = request.session['values']['color'] #For make model
-            identifier = 'ex3_model_shape'  # Make session to select model
+            identifier = request.session['identifier']  # Make session to select model
             response_color = json.loads(send_color_request(data_from_post, identifier))
             response_shape = json.loads(send_shape_request(data_from_post, identifier))
             print(response_shape)
 
             if response_shape['type'] == "error":
                 print(response_shape['message'])
-                response['shape'] = "Error"
+                response['shape']['type'] = "Error"
+                response['shape']['class'] = "negative"
             elif response_shape['type'] == "true":
-                response['shape'] = "Accepted"
+                response['shape']['class'] = "positive"
+                response['shape']['type'] = "Accepted"
             elif response_shape['type'] == "false":
-                response['shape'] = "Denied"
+                response['shape']['class'] = "negative"
+                response['shape']['type'] = "Denied"
 
             if response_color['type'] == "error":
                 print(response_shape['message'])
-                response['color'] = "Error"
+                response['color']['type'] = "Error"
+                response['color']['class'] = "negative"
             elif response_color['type'] == "true":
-                response['color'] = "Accepted"
+                response['color']['class'] = "positive"
+                response['color']['type'] = "Accepted"
             elif response_color['type'] == "false":
-                response['color'] = "Denied"
+                response['color']['class'] = "negative"
+                response['color']['type'] = "Denied"
 
         if request.POST.get('action') == 'new_model':
             values = check_for_session(request)
@@ -60,8 +66,15 @@ def index(request):
             response_shapemodel_request = send_shapemodel_request(modelimg, model_name + '_shape', values['shape'])
             print('send_colormodel_request...')
             response_colormodel_request = send_colormodel_request(modelimg, model_name + '_color', values['color'])
-            print("Response from shape: ", response_shapemodel_request)
-            print("Response from color: ", response_colormodel_request)
+            print("Response from shape: ", response_shapemodel_request) #TODO Weergeven op pagina
+            print("Response from color: ", response_colormodel_request) #TODO Weergeven op pagina
+
+        if request.POST.get('action') == 'remove_model':
+            identifier = request.POST.get('identifier')
+            delmodel = del_model(identifier)
+            print(delmodel)
+        if request.POST.get('action') == 'change_model':
+            request.session['identifier'] = request.POST.get('identifier')
 
     template = loader.get_template('app/index.html')
     context = {'models': models, 'response': response}

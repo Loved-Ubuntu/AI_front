@@ -40,9 +40,9 @@ const csrftoken = getCookie('csrftoken');
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td class="positive">{{response.shape}}</td>
-                                      <td class="negative">{{response.color}}</td>
-                                      <td class="positive">{{response.label}}</td>
+                                      <td class="{{response.shape.class}}">{{response.shape.type}}</td>
+                                      <td class="{{response.color.class}}">{{response.color.type}}</td>
+                                      <td class="{{response.label.class}}">{{response.label.type}}</td>
                                     </tr>
                                   </tbody>
                             </table>
@@ -131,10 +131,13 @@ const csrftoken = getCookie('csrftoken');
                                         <div class="description">
                                             <p></p>
                                         </div>
-                                        <div class="extra">
-                                            <button class="ui green button" name="" value="" type="">Use model</button>
-                                            <button class="ui red button" name="" value="" type="">Delete</button>
-                                        </div>
+                                        <form class="ui form" method="POST">
+                                            <div class="extra">
+                                                <input type="hidden" name="identifier" value="{{x.identifier}}">
+                                                <button class="ui green button" name="action" value="change_model" type="">Use model</button>
+                                                <button class="ui red button" name="action" value="remove_model" type="">Delete</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
