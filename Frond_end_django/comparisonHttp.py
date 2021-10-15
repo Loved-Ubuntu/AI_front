@@ -24,7 +24,7 @@ def send_shapemodel_request(image_encoded, identifier, shape):
             },
             {
                 'operation': 'blur',
-                'arg': {'blur': shape['blur']}
+                'arg': {}
             },
             {
                 'operation': 'edges',
@@ -32,7 +32,7 @@ def send_shapemodel_request(image_encoded, identifier, shape):
             },
             {
                 'operation': 'grayscale',
-                'arg': {'grayscale': shape['grayscale']}
+                'arg': {}
             },
             {
                 'operation': 'threshold',

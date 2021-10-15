@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import Context, loader
 from django.views.decorators.csrf import csrf_exempt
 from Frond_end_django.comparisonHttp import *
-from Frond_end_django.standard_values import get_standard_values_shape, get_standard_values_color
+from Frond_end_django.standard_values import get_standard_values_shape, get_standard_values_color, check_for_session
 from Frond_end_django.save_values import save_settings_shape, save_settings_color
 from django.contrib.sessions.models import Session
 
@@ -17,28 +17,51 @@ def index(request):
     try:
         response
     except NameError:
-        response = {'shape': 'None', 'color': 'None', 'label': 'None'}
-    if request.method == 'POST': #Sending image + settings
-        data_from_post = json.load(request)['image']
-        data_from_post = data_from_post[22:]
-        model = "ex3_modelx" #Dit moet opgevraagd worden
-        shape = request.session['values']['shape']
-        color = request.session['values']['color']
-        identifier = model + "_color"
-        response_color = send_colormodel_request(data_from_post, identifier, color)
-        identifier = model + "_shape"
-        response_shape = json.loads(send_shapemodel_request(data_from_post, identifier, shape))
+        response = {'shape': 'None', 'color': 'None', 'label': 'Yet to implement'}
+    if request.method == 'POST':
+        if request.POST.get('action') == 'send_image':
+            data_from_post = request.POST.get('image')
+            request.session['image'] = data_from_post[22:]
 
-        if response_shape['type'] == "error":
-            print(response_shape['message'])
-            response['shape'] = "Error"
-        elif response_shape['type'] == "true":
-            response['shape'] = "Accepted"
-        elif response_shape['type'] == "false":
-            response['shape'] = "Denied"
+        if request.POST.get('action') == 'post_image':
+            data_from_post = request.session['image']
+            model = "ex3_modelx"  # Dit moet opgevraagd worden  #For make model
+            shape = request.session['values']['shape'] #For make model
+            color = request.session['values']['color'] #For make model
+            identifier = 'ex3_model_shape'  # Make session to select model
+            response_color = json.loads(send_color_request(data_from_post, identifier))
+            response_shape = json.loads(send_shape_request(data_from_post, identifier))
+            print(response_shape)
 
-        #if response_color['type'] == 'error':
-            #print(response_color['message'])
+            if response_shape['type'] == "error":
+                print(response_shape['message'])
+                response['shape'] = "Error"
+            elif response_shape['type'] == "true":
+                response['shape'] = "Accepted"
+            elif response_shape['type'] == "false":
+                response['shape'] = "Denied"
+
+            if response_color['type'] == "error":
+                print(response_shape['message'])
+                response['color'] = "Error"
+            elif response_color['type'] == "true":
+                response['color'] = "Accepted"
+            elif response_color['type'] == "false":
+                response['color'] = "Denied"
+
+        if request.POST.get('action') == 'new_model':
+            values = check_for_session(request)
+            print(values)
+            # Set vars
+            modelimg = request.session['image']
+            model_name = request.POST.get('model_name')
+            # Create models
+            print('send_shapemodel_request...')
+            response_shapemodel_request = send_shapemodel_request(modelimg, model_name + '_shape', values['shape'])
+            print('send_colormodel_request...')
+            response_colormodel_request = send_colormodel_request(modelimg, model_name + '_color', values['color'])
+            print("Response from shape: ", response_shapemodel_request)
+            print("Response from color: ", response_colormodel_request)
 
     template = loader.get_template('app/index.html')
     context = {'models': models, 'response': response}
@@ -49,15 +72,7 @@ def index(request):
 
 @csrf_exempt
 def settings(request):
-
-    if request.session.is_empty():
-        shape = get_standard_values_shape()
-        color = get_standard_values_color()
-        request.session['values'] = {"shape": shape, "color": color}
-        values = request.session['values']
-    else:
-        #Session.objects.all().delete() #If session crash, run this
-        values = request.session['values']
+    values = check_for_session(request)
 
     if request.method == 'POST':
         if request.POST.get('action') == 'shape_reset':

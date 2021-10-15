@@ -41,19 +41,25 @@ const csrftoken = getCookie('csrftoken');
                                   <tbody>
                                     <tr>
                                       <td class="positive">{{response.shape}}</td>
-                                      <td class="negative">Denied</td>
-                                      <td class="positive">Accepted</td>
+                                      <td class="negative">{{response.color}}</td>
+                                      <td class="positive">{{response.label}}</td>
                                     </tr>
                                   </tbody>
                             </table>
                             <div id="container">
                                 <video autoplay="true" id="videoElement"></video>
                                 <br/><br/>
-                                <button class="positive fluid ui button" id="click-photo">Make an image</button>
+                                <div class="ui buttons">
+                                    <button class="ui button" id="click-photo">Make an image</button>
+                                    <form class="ui form" method="POST">
+                                        <button class="ui button" name="action" value="post_image" type="submit">Send this image</button>
+                                    </form>
+                                </div>
+                                <br/>
                                 <br/>
                                 <canvas id="canvas" width="640" height="480"></canvas>
-                                </div>
-                            <script>
+
+                                <script>
 
                                 let click_button = document.querySelector("#click-photo");
                                 let canvas = document.querySelector("#canvas");
@@ -72,12 +78,25 @@ const csrftoken = getCookie('csrftoken');
                                 click_button.addEventListener('click', function() {
                                     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
                                     var dataURL = canvas.toDataURL("");
+
+                                    var details = {
+                                        'image': dataURL,
+                                        'action': 'send_image',
+                                    };
+
+                                    var formBody = [];
+                                    for (var property in details) {
+                                      var encodedKey = encodeURIComponent(property);
+                                      var encodedValue = encodeURIComponent(details[property]);
+                                      formBody.push(encodedKey + "=" + encodedValue);
+                                    }
+                                    formBody = formBody.join("&");
+
                                     fetch('', {
                                         headers: {
-                                          'Accept': 'application/json',
-                                          'Content-Type': 'application/json'
+                                          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                                         },
-                                        body:JSON.stringify({'image' : dataURL}),
+                                        body: formBody,
                                         method:"POST"
                                     })
                                         .then(response => {response.json()})
@@ -86,7 +105,15 @@ const csrftoken = getCookie('csrftoken');
                                 });
                                 }
                             </script>
-                            <button class="ui blue button" name="" value="" type="">Send this image</button>
+                                <br/>
+                                <br/>
+                                <form class="ui form" method="POST">
+                                    <div class="ui action input fluid">
+                                        <input type="text" name="model_name" placeholder="Model name">
+                                        <button class="ui blue button" name="action" value="new_model" type="submit">Make new model</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="six wide column">
@@ -97,12 +124,13 @@ const csrftoken = getCookie('csrftoken');
                                         <div class="ui small image">
                                             <img src="/static/images/no_image_on_hand.jpg">
                                         </div>
+                                    </div>
                                     <div class="middle aligned content">
                                         <div class="header">
                                             {{x.identifier}}
                                         </div>
                                         <div class="description">
-                                            <p>Information about the model</p>
+                                            <p></p>
                                         </div>
                                         <div class="extra">
                                             <button class="ui green button" name="" value="" type="">Use model</button>
