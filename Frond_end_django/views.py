@@ -4,16 +4,12 @@ from django.views.decorators.csrf import csrf_exempt
 from Frond_end_django.comparisonHttp import *
 from Frond_end_django.standard_values import get_standard_values_shape, get_standard_values_color, check_for_session
 from Frond_end_django.save_values import save_settings_shape, save_settings_color
-from django.contrib.sessions.models import Session
 
 @csrf_exempt
 def index(request):
     models = json.loads(get_models())
-    # print(models['message'][0]['imageOperations']) #settings (loop the 0)
-    # print(models['message'][0]['hist']) #image
-    #print(models['message'][0]['identifier'])  # model_name
 
-    #print(models)
+    #Bij eerste aankomt op site, zijn er nog geen resposes voor in de tabel
     try:
         response
     except NameError:
@@ -26,8 +22,8 @@ def index(request):
         if request.POST.get('action') == 'post_image':
             data_from_post = request.session['image']
             model = "ex3_modelx"  # Dit moet opgevraagd worden  #For make model
-            shape = request.session['values']['shape'] #For make model
-            color = request.session['values']['color'] #For make model
+            shape = request.session['values']['shape'] #For make model settings if ever needed
+            color = request.session['values']['color'] #For make model settings if ever needed
             identifier = request.session['identifier']  # Make session to select model
             response_color = json.loads(send_color_request(data_from_post, identifier))
             response_shape = json.loads(send_shape_request(data_from_post, identifier))
@@ -45,7 +41,7 @@ def index(request):
                 response['shape']['type'] = "Denied"
 
             if response_color['type'] == "error":
-                print(response_shape['message'])
+                print(response_shape['message']) #TODO weergeven op pagina
                 response['color']['type'] = "Error"
                 response['color']['class'] = "negative"
             elif response_color['type'] == "true":
@@ -69,18 +65,16 @@ def index(request):
             print("Response from shape: ", response_shapemodel_request) #TODO Weergeven op pagina
             print("Response from color: ", response_colormodel_request) #TODO Weergeven op pagina
 
-        if request.POST.get('action') == 'remove_model':
+        if request.POST.get('action') == 'remove_model':    #Remove model TODO geeft nog een error dat identifier niet bestaat
             identifier = request.POST.get('identifier')
             delmodel = del_model(identifier)
             print(delmodel)
-        if request.POST.get('action') == 'change_model':
+        if request.POST.get('action') == 'change_model': #Change model to send images to
             request.session['identifier'] = request.POST.get('identifier')
 
     template = loader.get_template('app/index.html')
     context = {'models': models, 'response': response}
-    #for key in models['message']:
-        #print(key['identifier'])
-        #print(key)
+
     return HttpResponse(template.render(context, request))
 
 @csrf_exempt
@@ -100,8 +94,6 @@ def settings(request):
             request.session['values'] = save_settings_shape(request, values)
         elif request.POST.get('action') == 'color':
             request.session['values'] = save_settings_color(request, values)
-
-    #print(request.session['values']) # To see if session is correct
 
     template = loader.get_template('app/settings.html')
     context = {'form': values}

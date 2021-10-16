@@ -157,5 +157,5 @@ def get_models():
 
 
 def del_model(identifier):
-    response = requests.delete(f'{url}/models/ex3_model_shape')  # DELETE Request naar server voor een model
+    response = requests.delete(f'{url}/models/{identifier}')  # DELETE Request naar server voor een model
     return response.text
