@@ -60,8 +60,13 @@ def index(request):
             # Create models
             print('send_shapemodel_request...')
             response_shapemodel_request = send_shapemodel_request(modelimg, model_name + '_shape', values['shape'])
+            response_shapemodel_request = json.loads(response_shapemodel_request)
+            if response_shapemodel_request['type'] != "error":
+                contour = response_shapemodel_request['message']['contour']
+            else:
+                contour = ''
             print('send_colormodel_request...')
-            response_colormodel_request = send_colormodel_request(modelimg, model_name + '_color', values['color'])
+            response_colormodel_request = send_colormodel_request(modelimg, model_name + '_color', values['color'], contour)
             print("Response from shape: ", response_shapemodel_request) #TODO Weergeven op pagina
             print("Response from color: ", response_colormodel_request) #TODO Weergeven op pagina
 
