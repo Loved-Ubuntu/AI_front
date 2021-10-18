@@ -14,8 +14,8 @@ const csrftoken = getCookie('csrftoken');
 </head>
     <body>
         {% block content %}
-        <div class="ui container" style="width: 80%">
-            <div class="ui container" style="width: 80%">
+        <div class="ui container" style="width: 100%">
+            <div class="ui container" style="width: 90%">
                 <div class="ui red header clear">
                     <br/>
                     <h1>
@@ -28,7 +28,7 @@ const csrftoken = getCookie('csrftoken');
                     <a href="/information" class="item active"></i> Information </a>
                 </div>
                 <div class="ui grid stackable doubled">
-                    <div class="ten wide column">
+                    <div class="eleven wide column">
                         <div class="ui center text segment">
                             <table class="ui celled table">
                                   <thead>
@@ -116,7 +116,7 @@ const csrftoken = getCookie('csrftoken');
                             </div>
                         </div>
                     </div>
-                    <div class="six wide column">
+                    <div class="five wide column">
                         <div class="ui center text segment">
                             {% for x in models.message %}
                                 <div class="ui items">
