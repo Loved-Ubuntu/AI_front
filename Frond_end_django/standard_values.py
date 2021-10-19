@@ -15,7 +15,7 @@ def get_standard_values_color():
     return (color)
 
 def check_for_session(request): #TODO change how to check for session
-        try:
+    try:
         #Session.objects.all().delete() #If session crash, run this
         values = request.session['values']
     except NameError:
