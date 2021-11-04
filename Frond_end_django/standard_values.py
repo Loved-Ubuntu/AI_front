@@ -14,12 +14,11 @@ def get_standard_values_color():
     }
     return (color)
 
-def check_for_session(request): #TODO change how to check for session
+def check_for_session(request):
     if 'values' in request.session:
         values = request.session['values']
     else:
         #Session.objects.all().delete()  # If session crash, run this
-        print(request.session['values'])
         shape = get_standard_values_shape()
         color = get_standard_values_color()
         request.session['values'] = {"shape": shape, "color": color}
