@@ -24,7 +24,63 @@
              <div class="ui grid stackable doubled">
                 <div class="sixteen wide column">
                     <div class="ui center text segment">
-                        Information
+                        <h1>Anomaly Detection met Computer Vision</h1>
+                        Anomaly Detection is een beschrijving voor elk process dat probeert om 'fouten' op te sporen in een groep objecten.
+                        In dit project voeren we Anomaly Detection uit voor producten op een lopende band. Dat houdt in dat er steeds een object voorgelegd wordt aan het systeem, en dat het systeem moet bepalen of dit significant afwijkt van de rest van de groep.
+                        Als voorbeeld wordt een fabriek voor plastieke flessen genomen.<br/><br/>
+                        Er is voor dit project gekozen om het uitvoeren van Anomaly Detection uit te voeren in drie onderdelen.
+                        Als deze drie onderdelen samen uitgevoerd worden, is het mogelijk om Anomaly Detection volledig uit te voeren. Het opsplitsen van het volledige process in drie onderdelen maakt het ook mogelijk om een specifiek onderdeel uit te voeren bij elke stap van het productieprocess, bijvoorbeeld.<br/><br/>
+                        De volledige werking van het systeem is opgedeeld in de Vorm, de Kleur en de Kenmerken.<br/><br/>
+                        &nbsp; &nbsp;-	De Vorm: is de vorm van het object consistent met het model? Er zijn dus geen deuken, gaten, etc. in de fles<br/>
+                        &nbsp; &nbsp;-	De Kleur: is de kleur van de fles consistent met het model? Sommige flessen zijn gekleurd, en het is interessant om dan na te gaan of deze ook correct gekleurd zijn. Dit kan ook gebruikt worden om te controleren dat de fles gevult is (een gevulde fles heeft een andere kleur dan een leg fles)<br/>
+                        &nbsp; &nbsp;-	De Kenmerken: zijn bepaalde logo's, stempels, etc consistent met het model? Denk hier bijvoorbeeld aan het label op een fles. Het is belangrijk om na te gaan dat dit label correct is vastgemaakt op de fles, en dat er bijvoorbeeld niet twee labels aanwezig zijn.<br/><br/>
+                        Binnen dit project wordt voor het uitvoeren van Anomaly Detection gewerkt met OpenCV in Python. OpenCV is een veelgebruikt library voor Computer Vision en is beschikbaar in veel verschillende programmeertalen. Als input wordt steeds een real-time foto van het object op de lopende band gemaakt. Het idee is dus dat er ergens aan de lopende band een camera hangt die van elk object een foto kan maken en doorsturen naar het systeem voor analyse.
+                         
+                        <h1>Vorm</h1>
+                        Het uiteindelijke doel in dit onderdeel is dus het vergelijken van de vorm van een nieuw product met de vorm van een 'model'. Om tot een 'model' te komen is het eigenlijk heel simpel. Er is de verwachting dat elke fles praktisch exact hetzelfde is. Daarom kan om het eender welke goedgekeurde fles als model gebruikt worden.<br/><br/>
+                        Om het vergelijken van de vormen mogelijk te maken, is de eerste stap dus dat we de vorm van een object kunnen definieren. Binnen dit project wordt voor het uitvoeren van Anomaly Detection gewerkt met OpenCV in Python. Om de vorm van een object te definiëren kan in OpenCV gebruik gemaakt worden van enkele Image Processing technieken, Edge Detection en Contour Detection. Dit wordt uitgevoerd op de foto van het object op de lopende band.
+                        <h1>Image Processing</h1>
+                        Om de echte structuur van een object en de achtergrond in een foto te vinden, is te veel detail een nadeel. Het enige wat interessant is bij het vinden van een object uit een foto, is het contrast bij 'randen' tussen objecten in de foto. Hieronder is een voorbeeldfoto van een drankfles geplaatst. De foto wordt verkleind (downscaling), zwart-wit gemaakt (grayscaling), en met een blurring techniek waziger gemaakt om kleine details te verbergen.<br/><br/>
+                        <img src="/static/images/information01.jpg" width="300" height="450"><img src="/static/images/information02.jpg" width="300" height="450"><br/>
+
+                        Deze foto is duidelijk een lagere kwaliteit, maar de echte structuur van de verschillende objecten is even duidelijk, en voor het systeem zelfs meer duidelijk.
+                        <h1>Edge Detection</h1>
+                        Het is dan mogelijk om met de resulterende foto Edge Detection uit te voeren. Edge Detection probeert uit de afbeelding de tussenlijnen tussen objecten te vinden. Afhankelijk van de lichtinval, de kleur van het object tegenover de achtergrond, de positie van de camera relatief aan het object, etc. moeten hier andere parameters gebruikt worden.
+                        Als de juiste parameters gevonden zijn voor een bepaalde situatie zoals net beschreven, kunnen diezelfde parameters steeds opnieuw gebruikt worden in die situatie.<br/><br/>
+                        Het resultaat van de Edge Detection is dat elke 'edge' tussen twee objecten in de foto getekend is en al de rest weggelaten is.
+                        <h1>Contour Detection</h1>
+                        Met de afbeelding waar enkel de 'edges' op te zien zijn, wordt Contour Detection uitgevoerd. Contour Detection zoekt alle 'gesloten' groepen edges en beschrijft die aan de hand van vectors.
+                        Een contour beschrijft dus een groep van edges die samen een object vormen.<br/><br/>
+                        Uit de resultaten van de Contour detection, wordt de grootste gevonden contour als het object genomen. Het is dus belangrijk dat in de input-foto van het object, dit ook het centrale object is. Hieronder is de contour van het object uit het voorbeeld van eerder met de Edge Detection en Contour detection terug op een lege afbeelding getekend. We zien dus dat de contour de vorm van het object perfect beschrijft.<br/><br/>
+                        <img src="/static/images/information03.jpg" width="300" height="450"><br/>
+                        Met deze stappen is het dus mogelijk om de vorm van een object te definieren.
+                        <h1>Vergelijken</h1>
+                        De volgende stap, nu dat het mogelijk is om de vorm van een object te beschrijven, is dus het vergelijken van een 'model' contour met een andere contour, dat een nieuw object beschrijft. Er wordt dus eerst, volgens de bovenstaande stappen, een foto van een model object genomen en gebruikt om een 'model' contour op te stellen.
+                        Daarna kan, met een foto gemaakt in dezelfde toestand, een nieuw object op dezelfde manier met dezelfde parameters omgezet worden tot een contour. Hieronder staat een soortgelijke foto als de eerdere afbeelding. Deze wordt, met dezelfde gevonden parameters, omgezet tot een contour.<br/><br/>
+                        <img src="/static/images/information04.jpg" width="300" height="450"><img src="/static/images/information05.jpg" width="300" height="450"><img src="/static/images/information06.jpg" width="300" height="450"><br/>
+                        OpenCV ondersteunt de functionaliteit om twee contours te vergelijken en een score van 0.0 tot 1.0 terug te geven, die beschrijft hoe hard deze van elkaar afwijken. Op basis van die gevonden waarde voor het 'model' object, tegenover een nieuw object, kan besloten worden of het nieuwe object significant afwijkt van het model in de vorm.
+                         
+                        <h1>Kleur</h1>
+                        Het uiteindelijke doel in dit onderdeel is dus het vergelijken van de kleur van een nieuw product met de kleur van een 'model'. Het opstellen van het ‘Model’ is opnieuw redelijk simpel. Eender welke gevulde fles kan gebruikt worden om een model op te stellen, met dezelfde restricties op de ‘situatie’ van de afbeelding zoals eerder beschreven.<br/><br/>
+                        Om de kleur van twee objecten te vergelijken, moet eerst de kleurverdeling van een object gedefinieerd worden. OpenCV bevat de functionaliteit om een kleurhistogram op te stellen, dat de kleurverdeling in verschillende plaatsen in een afbeelding beschrijft. Om enkel de kleur van het object, dus niet met de achtergrond, mee te tellen, is het noodzakelijk om het object uit de foto te isoleren.
+                        <h1>Object uit foto halen</h1>
+                        In eerste instantie werd er gewerkt met een soortgelijke werkwijze als de vorm: er zou eerst een contour gevonden worden van het object, en die contour zou gebruikt worden om het object te isoleren uit de foto. Bij het testen kwamen we tegen het probleem aan dat het uitvoeren van dezelfde procedure, met dezelfde parameters, op een object dat een afwijkende kleur heeft, niet correct werkte. Er is daarom gekozen om eerst de contour van het model te vinden, en dan voor elk nieuw object diezelfde contour te gebruiken. Deze werkwijze gaat ervan uit dat elk nieuw object in de foto op dezelfde plaats staat in die afbeelding als de afbeelding gebruikt voor het model.<br/><br/>
+                        Als een contour opgesteld is, is het mogelijk om een ‘mask’ op te stellen dat de vorm van het object bevat. Dit ‘mask’ is een array van pixel coordinaten van dezelfde dimensies als de originele afbeelding van het object. Als de pixel wel meetelt voor het object, heeft die een waarde van 1 (wit), als die niet meetelt, heeft die een waarde van 0 (zwart). Door dan voor elke originele pixel na te gaan of die in het mask een 0 of 1 is, en elke pixel die niet meeteld te verwijderen uit de originele foto, blijft een afbeelding van enkel het object uit de foto over.
+                        Hieronder wordt dit process uitgewerkt op hetzelfde voorbeeld als de vorm.<br/><br/>
+                        <img src="/static/images/information07.jpg" width="300" height="450"><img src="/static/images/information08.jpg" width="300" height="450"><img src="/static/images/information09.jpg" width="150" height="450"><br/>
+
+                        Uit de contour van het object foto wordt een mask opgesteld, en door het mask te gebruiken op de originele foto wordt het object uit de foto gehaald.
+                        <h1>Kleurhistogram</h1>
+                        OpenCV bevat de functionaliteit om een kleurhistogram op te stellen van een foto. In de implementatie in het systeem wordt een histogram van 3 lagen (RGB), elk met een shape van 8 en 256 bins gebruikt. Dit is een goede balans tussen accuraatheid en tijds-en-ruimtecomplexiteit.
+                        Het kleurhistogram opstellen van de afbeelding waar het object geïsoleerd is staat dus toe om de kleur van het object te beschrijven. Dit wordt eerst uitgevoerd voor een model, en dan later steeds met dezelfde instellingen op elk nieuw object.
+                        Vergelijken
+                        Nu dat het mogelijk is om de kleur van een object te beschrijven, kunnen de verschillende objecten vergeleken worden. In de implementatie binnen het systeem wordt een vergelijking gedaan op basis van overlap tussen de twee histogrammen. Dat gebeurt met een functie in OpenCV.
+                        Het resultaat van de vergelijking is opnieuw een score tussen 0.0 en 1.0 die de afwijking tussen de twee histogrammen weergeeft.
+                        Dus, met de bovenstaande stappen, kan een foto waar de kleur afwijkt ook omgezet worden tot een kleurhistogram en vergelijkt worden. Hieronder staat een voorbeeld waar hetzelfde voorbeeld en afwijkende kleur heeft, en wordt geëxtraheerd met een mask.<br/><br/>
+                        <img src="/static/images/information10.jpg" width="300" height="450"><img src="/static/images/information11.jpg" width="300" height="450"><img src="/static/images/information12.jpg" width="150" height="450"><br/>
+                         
+                        <h1>Kenmerken</h1>
+                        Wegens tijdsgebrek is dit onderdeel van het onderzoek niet uitgevoerd en is deze functionaliteit niet geïmplementeerd in de demonstrator.<br/><br/>
                     </div>
                 </div>
              </div>
