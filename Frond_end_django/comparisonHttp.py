@@ -20,7 +20,7 @@ def send_shapemodel_request(image_encoded, identifier, shape):
         'imageOperations': [
             {
                 'operation': 'scale',
-                'arg': {'scale': shape['scale']}
+                'arg': {'scale': float(shape['scale'])}
             },
             {
                 'operation': 'blur',
@@ -28,7 +28,7 @@ def send_shapemodel_request(image_encoded, identifier, shape):
             },
             {
                 'operation': 'edges',
-                'arg': {'lower': shape['edges']['lower'], 'upper': shape['edges']['upper']}
+                'arg': {'lower': float(shape['edges']['lower']), 'upper': float(shape['edges']['upper'])}
             },
             {
                 'operation': 'grayscale',
@@ -36,7 +36,7 @@ def send_shapemodel_request(image_encoded, identifier, shape):
             },
             {
                 'operation': 'threshold',
-                'arg': {'T': shape['threshold']['t'], 'fill': shape['threshold']['fill']}
+                'arg': {'T': float(shape['threshold']['t']), 'fill': float(shape['threshold']['fill'])}
             },
         ],
     }
@@ -65,7 +65,7 @@ def send_colormodel_request(image_encoded, identifier, color, contour):
         'imageOperations': [
             {
                 'operation': 'scale',
-                'arg': {'scale': color['scale']}
+                'arg': {'scale': float(color['scale'])}
             },
         ],
     }
