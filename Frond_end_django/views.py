@@ -27,16 +27,16 @@ def index(request):
             identifier = request.session['identifier']  # Make session to select model
             response_color = json.loads(send_color_request(data_from_post, identifier))
             response_shape = json.loads(send_shape_request(data_from_post, identifier))
-            print(response_shape)
+            print(response_shape, response_color)
 
             if response_shape['type'] == "error":
                 print(response_shape['message'])
                 response['shape']['type'] = "Error"
                 response['shape']['class'] = "negative"
-            elif response_shape['type'] == "true":
+            elif response_shape['message'] == True:
                 response['shape']['class'] = "positive"
                 response['shape']['type'] = "Accepted"
-            elif response_shape['type'] == "false":
+            elif response_shape['message'] == False:
                 response['shape']['class'] = "negative"
                 response['shape']['type'] = "Denied"
 
@@ -44,10 +44,10 @@ def index(request):
                 print(response_shape['message']) #TODO weergeven op pagina
                 response['color']['type'] = "Error"
                 response['color']['class'] = "negative"
-            elif response_color['type'] == "true":
+            elif response_color['message'] == True:
                 response['color']['class'] = "positive"
                 response['color']['type'] = "Accepted"
-            elif response_color['type'] == "false":
+            elif response_color['message'] == False:
                 response['color']['class'] = "negative"
                 response['color']['type'] = "Denied"
 
